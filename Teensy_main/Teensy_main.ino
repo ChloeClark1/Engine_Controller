@@ -3,6 +3,7 @@
 #include <NativeEthernetUdp.h>
 
 uint32_t seqNum = 0;
+uint16_t safing = 0;
 
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED      // Set the Mac Address
@@ -26,32 +27,32 @@ typedef struct {          // Struct for the incoming command from GS
   uint16_t state;
 } ec_command_t;
 
-typedef struct {          // Struct for the incoming command from GS
+typedef struct {          // Struct for Solenoid reply/states
   uint16_t sol1;
   uint16_t sol2;
   uint16_t sol3;
-  uint32_t seqNum;
 } __attribute__((packed)) solReplyBuffer;
 
-typedef struct {          // Struct for the incoming command from GS
+typedef struct {          // Struct for igniter reply/states
   uint16_t igniter1;
-  uint32_t seqNum;
 } __attribute__((packed)) ignReplyBuffer;
 
-typedef struct {          // Struct for the incoming command from GS
+typedef struct {          // Struct for lights reply/states
   uint16_t LED_G;
   uint16_t LED_Y;
   uint16_t LED_R;
   uint16_t buzz;
-  uint32_t seqNum;
 } __attribute__((packed)) lightReplyBuffer;
 
+typedef struct {
+  solReplyBuffer solenoids;
+  ignReplyBuffer igniters;
+  lightReplyBuffer light;
+} __attribute__((packed)) stateBuffer;
 
-solReplyBuffer solenoids = {0, 0, 0, 0};
-ignReplyBuffer igniters = {0, 0};
-lightReplyBuffer light = {0, 0, 0, 0, 0};
 
-
+stateBuffer replyBuffer;
+stateBuffer allStates;
 ec_command_t packetBuffer;          // Initialize packetBuffer
 
 relay_t oxValve = {16, 0, 100};       // Initialize all objects planned to be used 
