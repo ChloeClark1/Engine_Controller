@@ -7,7 +7,7 @@ uint16_t safing = 0;
 
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED      // Set the Mac Address
-  
+
 };
 IPAddress ip(10, 10, 10, 75);      // Set the Teensy IP address
 
@@ -51,11 +51,10 @@ typedef struct {
 } __attribute__((packed)) stateBuffer;
 
 
-stateBuffer replyBuffer;
 stateBuffer allStates;
 ec_command_t packetBuffer;          // Initialize packetBuffer
 
-relay_t oxValve = {16, 0, 100};       // Initialize all objects planned to be used 
+relay_t oxValve = {16, 0, 100};       // Initialize all objects planned to be used
 relay_t fuelValve = {17, 0, 101};
 relay_t purgeValve = {18, 0, 102};
 relay_t igniter = {19, 0, 200};
@@ -70,7 +69,7 @@ void setup() {
 
 
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {    // If the ethernet hardware isn't detected, infinitely loop to prevent anything from running
-    while (true) {  
+    while (true) {
       delay(1);
     }
   }
@@ -90,11 +89,11 @@ void setup() {
   digitalWrite(greenLight.pin, HIGH);
   pinMode(buzzer.pin, OUTPUT);
   digitalWrite(buzzer.pin, HIGH);
-  
+
   Udp.begin(localPort);
-  Udp.beginPacket("224.0.0.1", 8080);   
-  Udp.write((char*)&seqNum, sizeof(uint32_t));      
-  Udp.endPacket();   
+  Udp.beginPacket("224.0.0.1", 8080);
+  Udp.write((char*)&seqNum, sizeof(uint32_t));
+  Udp.endPacket();
 }
 
 
