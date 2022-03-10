@@ -7,7 +7,7 @@ extern relay_t yellowLight;
 extern relay_t greenLight;
 extern relay_t buzzer;
 
-void engineSafe() {
+void engineSafe() {                                  // SHOULDNT NEED ANYMORE
   digitalWrite(oxValve.pin, HIGH);
   digitalWrite(fuelValve.pin, HIGH);
   digitalWrite(purgeValve.pin, LOW);

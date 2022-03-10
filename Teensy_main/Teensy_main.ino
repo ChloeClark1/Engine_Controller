@@ -4,6 +4,7 @@
 
 uint32_t seqNum = 0;
 uint16_t safing = 0;
+uint16_t mode = 0;
 
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED      // Set the Mac Address

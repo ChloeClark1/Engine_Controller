@@ -7,10 +7,11 @@ extern relay_t yellowLight;
 extern relay_t greenLight;
 extern relay_t buzzer;
 extern uint16_t safing;
+extern uint16_t mode;
 extern stateBuffer allStates;
 
 
-void packetReadSafe() {     // If safing is active, only allow a packet to unsafe it or change safe modes
+void packetReadSafe() {     // If safing is active, only allow a packet to unsafe it
 
   while(!Udp.parsePacket()) {
     yield();
@@ -28,15 +29,7 @@ void packetReadSafe() {     // If safing is active, only allow a packet to unsaf
     if (packetBuffer.state == 0) {
       safing = 0;
     }
-  } else if (packetBuffer.controlNum == 900) {
-    if (packetBuffer.state == 0) {
-      disabled();
-    } else if (packetBuffer.state == 1) {
-      cold();
-    } else if (packetBuffer.state == 99) {
-      hot();
-    }
-  }
+  } 
 }
 
 
@@ -49,6 +42,13 @@ void packetRead() {                     // Read incoming packet and parse it
    if (Ethernet.linkStatus() == LinkOFF){   // if the link is down, safe the engine and try not to let it blow up
       safing = 1;
      // Implement with engine_states
+   }
+
+   if (millis() > 10000) {
+    Udp.beginPacket("224.0.0.1", 8084);
+    Udp.write((char*)&allStates, sizeof(stateBuffer));
+    Udp.write((char*)&seqNum+1, sizeof(uint32_t));
+    Udp.endPacket();
    }
    /* if (e stop pressed){
     * safing = 1
@@ -133,20 +133,24 @@ void packetRead() {                     // Read incoming packet and parse it
         digitalWrite(buzzer.pin, LOW);
       }
     } else if (packetBuffer.controlNum == 900) {
-      if (packetBuffer.state == 0) {
-        disabled();
-      } else if (packetBuffer.state == 1) {
-        cold();
-      } else if (packetBuffer.state == 99) {
-        hot();
-      }
+    if (packetBuffer.state == 0) {
+      disabled();
+      mode = 0;
+    } else if (packetBuffer.state == 1) {
+      coldFail();
+      mode = 1;
+    } else if (packetBuffer.state == 99) {
+      hotFail();
+      mode = 99;
+    }
     } else if (packetBuffer.controlNum == 901) {
       if (packetBuffer.state == 1) {
         safing = 1;
         // implement with engine_states
       }
+  }
   Serial.print(seqNum);
-}
+
 }
 
 

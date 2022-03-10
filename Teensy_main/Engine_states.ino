@@ -23,7 +23,7 @@ void disabled() {           // Lock controls, all valves must be shut first, end
 }
 
 
-void hot() {                // Close fuel and ox and open purge,
+void hotFail() {                // Close fuel and ox and open purge,
   digitalWrite(fuelValve.pin, HIGH);
   digitalWrite(oxValve.pin, HIGH);
   digitalWrite(purgeValve.pin, LOW);
@@ -37,10 +37,18 @@ void hot() {                // Close fuel and ox and open purge,
 
   digitalWrite(purgeValve.pin, HIGH);
   allStates.solenoids.sol3 = 0;
-  packetReadSafe();
-}
+  disabled();
+  }
 
 
-void cold() {
-
+void coldFail() {       // Close everything, go to disabled
+  digitalWrite(fuelValve.pin, HIGH);
+  digitalWrite(oxValve.pin, HIGH);
+  digitalWrite(purgeValve.pin, HIGH);
+  digitalWrite(yellowLight.pin, LOW);
+  allStates.solenoids.sol1 = 0;
+  allStates.solenoids.sol2 = 0;
+  allStates.solenoids.sol3 = 0;
+  allStates.light.LED_Y = 1;
+  disabled();
 }
