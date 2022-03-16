@@ -19,6 +19,10 @@ void disabled() {           // Lock controls, all valves must be shut first, end
   allStates.light.LED_G = 1;
   allStates.light.LED_Y = 0;
   allStates.light.LED_R = 0;
+  Udp.beginPacket("224.0.0.1", 8084);
+  Udp.write((char*)&allStates, sizeof(stateBuffer));
+  Udp.write((char*)&seqNum, sizeof(uint32_t));
+  Udp.endPacket();
   packetReadSafe();
 }
 

@@ -7,22 +7,25 @@ control:
 100 = oxValve, 101 = fuelValve 102 = purgeValve				 // Solenoids
 200 = igniter1								 // Igniters
 300 = red light, 301 = yellow light, 302 = green light, 303 = buzzer	 // Dummy tower
+900 = mode change, 901 = safing change to 1				 // Safe modes
 
-ports: (are we sending to different GS ports or recieving on different ports?)
-8080 = solenoids
-8081 = igniters
-8082 = dummy tower
+ports: 
+8080 = seqNum
+8081 = solenoids
+8082 = igniters
+8083 = dummy tower
+8084 = All states + seqNum
 
 states:
 0 = off
 1 = on
 
-Output pins to relay:      // Also corresponds to index in replyBuffer array
-0 = oxValve
-1 = fuelValve
-2 = purgeValve
-3 = igniter
-4 = red light
-5 = yellow light
-6 = green light
-7 = buzzer
+Output pins to relay:  
+16 = oxValve
+17 = fuelValve
+18 = purgeValve
+19 = igniter
+20 = red light
+21 = yellow light
+22 = green light
+23 = buzzer

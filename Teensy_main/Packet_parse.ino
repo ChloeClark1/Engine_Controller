@@ -17,7 +17,7 @@ void packetReadSafe() {     // If safing is active, only allow a packet to unsaf
     yield();
     if (Ethernet.linkStatus() == LinkOFF){   // if the link is down, safe the engine and try not to let it blow up
       safing = 1;
-      engineSafe();
+      engineSafe();         // Change?
     }
   }
   if (packetBuffer.seqNum != seqNum + 1) {   // If the seqNum is not one greater than the current one, do not run that packet
@@ -133,15 +133,16 @@ void packetRead() {                     // Read incoming packet and parse it
         digitalWrite(buzzer.pin, LOW);
       }
     } else if (packetBuffer.controlNum == 900) {
+      safing = 1;
     if (packetBuffer.state == 0) {
-      disabled();
       mode = 0;
+      disabled();
     } else if (packetBuffer.state == 1) {
-      coldFail();
       mode = 1;
+      coldFail();
     } else if (packetBuffer.state == 99) {
-      hotFail();
       mode = 99;
+      hotFail();
     }
     } else if (packetBuffer.controlNum == 901) {
       if (packetBuffer.state == 1) {
