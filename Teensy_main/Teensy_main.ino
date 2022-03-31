@@ -3,9 +3,6 @@
 #include <NativeEthernetUdp.h>
 
 uint32_t timeStamp = 0;
-uint32_t seqNum = 0;
-uint16_t safing = 0;
-uint16_t mode = 0;
 uint16_t heartbeatCount = 0;
 
 byte mac[] = {
@@ -49,16 +46,22 @@ typedef struct {          // Struct for lights reply/states
 } __attribute__((packed)) lightReplyBuffer;
 
 typedef struct {
+  uint32_t seqNum;
+  uint16_t mode;
+  uint16_t safing;
+} __attribute__((packed)) extraReply;
+
+typedef struct {
   solReplyBuffer solenoids;
   ignReplyBuffer igniters;
   lightReplyBuffer light;
 } __attribute__((packed)) stateBuffer;
 
-
 stateBuffer allStates;
 ec_command_t packetBuffer;          // Initialize packetBuffer
 
-relay_t oxValve = {16, 0, 100};       // Initialize all objects planned to be used
+extraReply extraStates = {0, 0, 0};
+relay_t oxValve = {16, 0, 100};       // Initialize all structs planned to be used
 relay_t fuelValve = {17, 0, 101};
 relay_t purgeValve = {18, 0, 102};
 relay_t purgeValve2 = {24, 0, 103};
@@ -99,7 +102,7 @@ void setup() {
   digitalWrite(buzzer.pin, HIGH);
 
   Udp.beginPacket("224.0.0.1", 8080);
-  Udp.write((char*)&seqNum, sizeof(uint32_t));
+  Udp.write((char*)&extraStates.seqNum, sizeof(uint32_t));
   Udp.endPacket();
 }
 

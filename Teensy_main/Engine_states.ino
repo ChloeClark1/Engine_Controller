@@ -7,6 +7,7 @@ extern relay_t yellowLight;
 extern relay_t greenLight;
 extern relay_t buzzer;
 extern stateBuffer allStates;
+extern extraReply extraStates;
 
 
 void disabledFail() {           // Lock controls, all valves must be shut first, end state of safe states
@@ -64,13 +65,13 @@ void testFail() {       // Close everything, go to disabled
 
 
 void safe() {
-  if (mode == 0) {
+  if (extraStates.mode == 0) {
         disabledFail();
-      } else if (mode == 1) {
+      } else if (extraStates.mode == 1) {
         coldFail();
-      } else if (mode == 99) {
+      } else if (extraStates.mode == 99) {
         hotFail();
-      } else if (mode == 69) {
+      } else if (extraStates.mode == 69) {
         testFail();
       }
 
