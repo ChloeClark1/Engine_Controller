@@ -61,15 +61,15 @@ stateBuffer allStates;
 ec_command_t packetBuffer;          // Initialize packetBuffer
 
 extraReply extraStates = {0, 0, 0};
-relay_t oxValve = {16, 0, 100};       // Initialize all structs planned to be used
+relay_t oxValve = {18, 0, 100};       // Initialize all structs planned to be used
 relay_t fuelValve = {17, 0, 101};
-relay_t purgeValve = {18, 0, 102};
-relay_t purgeValve2 = {24, 0, 103};
+relay_t purgeValve = {16, 0, 102};
+relay_t purgeValve2 = {15, 0, 103};
 relay_t igniter = {19, 0, 200};
-relay_t redLight = {20, 0, 300};
-relay_t yellowLight = {21, 0, 301};
-relay_t greenLight = {22, 0, 302};
-relay_t buzzer = {23, 0, 303};
+relay_t redLight = {23, 0, 300};
+relay_t yellowLight = {22, 0, 301};
+relay_t greenLight = {21, 0, 302};
+relay_t buzzer = {20, 0, 303};
 
 void setup() {
   Ethernet.begin(mac, ip);    // Initialize Ethernet

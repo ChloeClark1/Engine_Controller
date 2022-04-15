@@ -6,6 +6,7 @@ extern relay_t redLight;
 extern relay_t yellowLight;
 extern relay_t greenLight;
 extern relay_t buzzer;
+extern uint16_t heartbeatCount;
 extern extraReply extraStates;
 extern uint32_t timeStamp;
 extern stateBuffer allStates;
@@ -21,6 +22,7 @@ void packetReadSafe() {     // If safing is active, only allow a packet to unsaf
         Udp.beginPacket("224.0.0.1", 8084);
         Udp.write((char*)&allStates, sizeof(stateBuffer));
         Udp.write((char*)&extraStates, sizeof(extraReply));
+        Udp.write((char*)&heartbeatCount, sizeof(uint16_t));
         Udp.endPacket();
         timeStamp = millis();
         heartbeatCount++;
@@ -63,7 +65,9 @@ void packetRead() {                     // Read incoming packet and parse it
   while(!Udp.parsePacket()) {
     if ( millis() > timeStamp + 1000) {      // Heartbeat while waiting for packet
       Udp.beginPacket("224.0.0.1", 8084);
-      Udp.write((char*)&extraStates, sizeof(extraReply));
+      Udp.write((char*)&allStates, sizeof(stateBuffer));
+      Udp.write((char*)&extraStates, sizeof(extraReply));        
+      Udp.write((char*)&heartbeatCount, sizeof(uint16_t));
       Udp.endPacket();
       timeStamp = millis();
       heartbeatCount++;
@@ -176,46 +180,46 @@ void packetRead() {                     // Read incoming packet and parse it
   
     
     if (packetBuffer.controlNum == 900) {
-    if (packetBuffer.state == 0) {
-      if (allStates.solenoids.sol1 != 0 || allStates.solenoids.sol2 != 0 || allStates.solenoids.sol3 != 0) {
-        extraStates.seqNum--;
-        return;
-      }
-      extraStates.mode = 0;
-      Udp.beginPacket("224.0.0.1", 8085);
-      extraStates.seqNum++;
-      Udp.write((char*)&extraStates, sizeof(extraReply));
-      Udp.endPacket();
-      
-    } else if (packetBuffer.state == 1) {
-      extraStates.mode = 1;
-      extraStates.seqNum++;
-      Udp.beginPacket("224.0.0.1", 8085);
-      Udp.write((char*)&extraStates, sizeof(extraReply));
-      Udp.endPacket();
-    } else if (packetBuffer.state == 99) {
-      extraStates.mode = 99;
-      extraStates.seqNum++;
-      Udp.beginPacket("224.0.0.1", 8085);
-      Udp.write((char*)&extraStates, sizeof(extraReply));
-      Udp.endPacket();
-    } else if (packetBuffer.state == 69) {
-      extraStates.mode = 69;
-      extraStates.seqNum++;
-      Udp.beginPacket("224.0.0.1", 8085);
-      Udp.write((char*)&extraStates, sizeof(extraReply));
-      Udp.endPacket();
-    }
-    } else if (packetBuffer.controlNum == 901) {
-      if (packetBuffer.state == 1) {
-        extraStates.safing = 1;
+      if (packetBuffer.state == 0) {
+        if (allStates.solenoids.sol1 != 0 || allStates.solenoids.sol2 != 0 || allStates.solenoids.sol3 != 0) {
+          extraStates.seqNum--;
+          return;
+        }
+        extraStates.mode = 0;
+        Udp.beginPacket("224.0.0.1", 8085);
         extraStates.seqNum++;
-        Serial.print("safing high");
+        Udp.write((char*)&extraStates, sizeof(extraReply));
+        Udp.endPacket();
+        
+      } else if (packetBuffer.state == 1) {
+        extraStates.mode = 1;
+        extraStates.seqNum++;
         Udp.beginPacket("224.0.0.1", 8085);
         Udp.write((char*)&extraStates, sizeof(extraReply));
         Udp.endPacket();
-        safe();
+      } else if (packetBuffer.state == 99) {
+        extraStates.mode = 99;
+        extraStates.seqNum++;
+        Udp.beginPacket("224.0.0.1", 8085);
+        Udp.write((char*)&extraStates, sizeof(extraReply));
+        Udp.endPacket();
+      } else if (packetBuffer.state == 69) {
+        extraStates.mode = 69;
+        extraStates.seqNum++;
+        Udp.beginPacket("224.0.0.1", 8085);
+        Udp.write((char*)&extraStates, sizeof(extraReply));
+        Udp.endPacket();
       }
+      } else if (packetBuffer.controlNum == 901) {
+        if (packetBuffer.state == 1) {
+          extraStates.safing = 1;
+          extraStates.seqNum++;
+          Serial.print("safing high");
+          Udp.beginPacket("224.0.0.1", 8085);
+          Udp.write((char*)&extraStates, sizeof(extraReply));
+          Udp.endPacket();
+          safe();
+        }
     }
   
   Serial.print(extraStates.seqNum);
@@ -245,8 +249,4 @@ void packetSend() {                      // Send packet back with response and t
     Udp.write((char*)&extraStates, sizeof(extraReply));
     Udp.endPacket();
   } 
-}
-
-void heartbeatSend() {
-  
 }
