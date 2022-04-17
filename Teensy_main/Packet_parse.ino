@@ -27,7 +27,11 @@ void packetReadSafe() {     // If safing is active, only allow a packet to unsaf
         timeStamp = millis();
         heartbeatCount++;
       } 
+    if (Ethernet.linkStatus() == LinkOFF) {
+      extraStates.safing = 1;
+      safe();
     }
+   }
     Udp.read((char*)&packetBuffer, 8);
     
     if (packetBuffer.seqNum != extraStates.seqNum + 1) {   // If the seqNum is not one greater than the current one, do not run that packet
@@ -75,6 +79,7 @@ void packetRead() {                     // Read incoming packet and parse it
 
     if (Ethernet.linkStatus() == LinkOFF) {
       extraStates.safing = 1;
+      safe();
     }
   }
 
@@ -247,6 +252,7 @@ void packetSend() {                      // Send packet back with response and t
     Udp.beginPacket("224.0.0.1", 8084);
     Udp.write((char*)&allStates, sizeof(stateBuffer));
     Udp.write((char*)&extraStates, sizeof(extraReply));
+    Udp.write((char*)&heartbeatCount, sizeof(uint16_t));
     Udp.endPacket();
   } 
 }

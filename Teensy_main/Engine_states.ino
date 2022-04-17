@@ -45,7 +45,7 @@ void hotFail() {                // Close fuel and ox and open purge,
 }
 
 
-void coldFail() {       // Close everything, go to disabled
+void coldFail() {       // Close everything
   digitalWrite(fuelValve.pin, HIGH);
   digitalWrite(oxValve.pin, HIGH);
   digitalWrite(purgeValve.pin, HIGH);
@@ -58,7 +58,7 @@ void coldFail() {       // Close everything, go to disabled
   allStates.light.LED_Y = 1;
 }
 
-void testFail() {       // Close everything, go to disabled
+void testFail() {       
   digitalWrite(yellowLight.pin, LOW);
   allStates.light.LED_Y = 1;
 }
