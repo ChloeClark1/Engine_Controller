@@ -29,7 +29,6 @@ void packetReadSafe() {     // If safing is active, only allow a packet to unsaf
       } 
     if (Ethernet.linkStatus() == LinkOFF) {
       extraStates.safing = 1;
-      safe();
     }
    }
     Udp.read((char*)&packetBuffer, 8);
