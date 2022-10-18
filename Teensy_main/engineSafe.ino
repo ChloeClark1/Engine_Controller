@@ -1,3 +1,6 @@
+/****************************************************************
+DEPRECATED, SHOULD NOT BE USED
+****************************************************************/
 extern relay_t oxValve;         // Refrence things from another file
 extern relay_t fuelValve;
 extern relay_t purgeValve;

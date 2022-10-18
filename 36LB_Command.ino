@@ -1,3 +1,8 @@
+/***********************************************
+This file is DEPRECATED and should no longer be used
+Used as the basis of new code for RL-36
+***********************************************/
+
 
 //Valve Pins
 // As of 10/17/2020, these were arbitrarily set to 9,10,11,12

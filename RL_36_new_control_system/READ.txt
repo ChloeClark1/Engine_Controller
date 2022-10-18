@@ -1,0 +1,2 @@
+This folder is DEPRECATED and should not be used.
+It was intended for use with sensors and gimbals if progress continued on RL-36

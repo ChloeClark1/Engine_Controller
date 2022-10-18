@@ -1,3 +1,8 @@
+/*
+Holds the safety states and goes through what to do in each of them
+
+@author Chloe Clark etc1444@rit.edu
+*/
 extern relay_t oxValve;         // Refrence things from another file
 extern relay_t fuelValve;
 extern relay_t purgeValve;
@@ -11,7 +16,6 @@ extern extraReply extraStates;
 
 
 void disabledFail() {           // Lock controls, all valves must be shut first, end state of safe states
-  
   digitalWrite(redLight.pin, HIGH);
   digitalWrite(yellowLight.pin, HIGH);
   digitalWrite(greenLight.pin, LOW);

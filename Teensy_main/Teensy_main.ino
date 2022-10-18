@@ -1,3 +1,11 @@
+/*
+Main file for the Engine controller, where structs are created and declared
+
+@author: Chloe Clark etc1444@rit.edu
+
+*/
+
+// TODO add PWM control for future servos, create unique control number 
 
 #include <NativeEthernet.h>         // Initialize Ethernet libraries
 #include <NativeEthernetUdp.h>

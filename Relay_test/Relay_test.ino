@@ -1,3 +1,8 @@
+/*
+Test program for lights to make sure they work
+
+@author Chloe Clark
+*/
 typedef struct {
   uint16_t pin;
   uint16_t currentState;

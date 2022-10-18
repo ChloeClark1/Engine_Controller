@@ -1,3 +1,12 @@
+/*
+Holds the functions used to read packets and send packets to the Ground Station
+
+@author Chloe Clark etc1444@rit.edu
+*/ 
+
+// TODO Add PWM for servos, clean up variable names because extraReply and extraStates are bad names.
+// Fix if statements (I really need to make switch statements work)
+
 extern relay_t oxValve;         // Refrence things from another file
 extern relay_t fuelValve;
 extern relay_t purgeValve;
@@ -10,7 +19,6 @@ extern uint16_t heartbeatCount;
 extern extraReply extraStates;
 extern uint32_t timeStamp;
 extern stateBuffer allStates;
-
 
 void packetReadSafe() {     // If safing is active, only allow a packet to unsafe it
 
